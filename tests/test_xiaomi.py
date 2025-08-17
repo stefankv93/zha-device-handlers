@@ -80,6 +80,13 @@ from zhaquirks.xiaomi.aqara.feeder_acn001 import (
     AqaraFeederAcn001,
     OppleCluster,
 )
+from zhaquirks.xiaomi.aqara.led_strip_t1 import (
+    AqaraLedStripT1,
+    LedStripT1Audio,
+    LedStripT1AudioEffect,
+    LedStripT1AudioSensitivity,
+    LedStripT1PowerOnStateMode,
+)
 from zhaquirks.xiaomi.aqara.light_acn import AqaraLightT1M, LumiPowerOnStateMode
 import zhaquirks.xiaomi.aqara.magnet_ac01
 import zhaquirks.xiaomi.aqara.magnet_acn001
@@ -2282,3 +2289,114 @@ async def test_lumi_magnet_sensor_aq2_bad_direction(zigpy_device_from_quirk, cap
 
     # Our matching logic should be forgiving
     assert listener.attribute_updates == [(0, t.Bool.true)]
+
+
+def test_t1_led_strip(zigpy_device_from_v2_quirk):
+    """Test Aqara T1 led strip adds missing endpoints."""
+
+    # create the device
+    device = zigpy_device_from_v2_quirk(AQARA, "lumi.light.acn132")
+    assert AqaraLedStripT1.cluster_id in device.endpoints[1].in_clusters
+
+    aqara_cluster = device.endpoints[1].opple_cluster
+    cluster_listener = ClusterListener(aqara_cluster)
+
+    # Checking min_brightness attribute update
+    aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.min_brightness.id, 12)
+    assert len(cluster_listener.attribute_updates) == 1
+    assert (
+        cluster_listener.attribute_updates[0][0]
+        == AqaraLedStripT1.AttributeDefs.min_brightness.id
+    )
+
+    assert cluster_listener.attribute_updates[0][1] == 12
+
+    # Checking max_brightness attribute update
+    aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.max_brightness.id, 88)
+    assert len(cluster_listener.attribute_updates) == 2
+    assert (
+        cluster_listener.attribute_updates[1][0]
+        == AqaraLedStripT1.AttributeDefs.max_brightness.id
+    )
+
+    assert cluster_listener.attribute_updates[1][1] == 88
+
+    # Checking power on state attribute update
+    aqara_cluster.update_attribute(
+        AqaraLedStripT1.AttributeDefs.power_on_state.id,
+        LedStripT1PowerOnStateMode.Toggle,
+    )
+    assert len(cluster_listener.attribute_updates) == 3
+    assert (
+        cluster_listener.attribute_updates[2][0]
+        == AqaraLedStripT1.AttributeDefs.power_on_state.id
+    )
+
+    assert cluster_listener.attribute_updates[2][1] == LedStripT1PowerOnStateMode.Toggle
+
+    # Checking length attribute update
+    aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.length.id, 3.2)
+    assert len(cluster_listener.attribute_updates) == 4
+    assert (
+        cluster_listener.attribute_updates[3][0]
+        == AqaraLedStripT1.AttributeDefs.length.id
+    )
+
+    assert cluster_listener.attribute_updates[3][1] == 3.2
+
+    # Checking audio attribute update
+    aqara_cluster.update_attribute(
+        AqaraLedStripT1.AttributeDefs.audio.id, LedStripT1Audio.On
+    )
+    assert len(cluster_listener.attribute_updates) == 5
+    assert (
+        cluster_listener.attribute_updates[4][0]
+        == AqaraLedStripT1.AttributeDefs.audio.id
+    )
+
+    assert cluster_listener.attribute_updates[4][1] == LedStripT1Audio.On
+
+    # Checking audio_sensitivity attribute update
+    aqara_cluster.update_attribute(
+        AqaraLedStripT1.AttributeDefs.audio_sensitivity.id,
+        LedStripT1AudioSensitivity.Medium,
+    )
+    assert len(cluster_listener.attribute_updates) == 6
+    assert (
+        cluster_listener.attribute_updates[5][0]
+        == AqaraLedStripT1.AttributeDefs.audio_sensitivity.id
+    )
+
+    assert cluster_listener.attribute_updates[5][1] == LedStripT1AudioSensitivity.Medium
+
+    # Checking audio_effect attribute update
+    aqara_cluster.update_attribute(
+        AqaraLedStripT1.AttributeDefs.audio_effect.id, LedStripT1AudioEffect.Rainbow
+    )
+    assert len(cluster_listener.attribute_updates) == 7
+    assert (
+        cluster_listener.attribute_updates[6][0]
+        == AqaraLedStripT1.AttributeDefs.audio_effect.id
+    )
+
+    assert cluster_listener.attribute_updates[6][1] == LedStripT1AudioEffect.Rainbow
+
+    # Checking preset attribute update
+    aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.preset.id, 7)
+    assert len(cluster_listener.attribute_updates) == 8
+    assert (
+        cluster_listener.attribute_updates[7][0]
+        == AqaraLedStripT1.AttributeDefs.preset.id
+    )
+
+    assert cluster_listener.attribute_updates[7][1] == 7
+
+    # Checking speed attribute update
+    aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.speed.id, 77)
+    assert len(cluster_listener.attribute_updates) == 9
+    assert (
+        cluster_listener.attribute_updates[8][0]
+        == AqaraLedStripT1.AttributeDefs.speed.id
+    )
+
+    assert cluster_listener.attribute_updates[8][1] == 77
