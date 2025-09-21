@@ -86,6 +86,7 @@ from zhaquirks.xiaomi.aqara.led_strip_t1 import (
     LedStripT1AudioEffect,
     LedStripT1AudioSensitivity,
     LedStripT1PowerOnStateMode,
+    LedStripT1Preset,
 )
 from zhaquirks.xiaomi.aqara.light_acn import AqaraLightT1M, LumiPowerOnStateMode
 import zhaquirks.xiaomi.aqara.magnet_ac01
@@ -2382,14 +2383,14 @@ def test_t1_led_strip(zigpy_device_from_v2_quirk):
     assert cluster_listener.attribute_updates[6][1] == LedStripT1AudioEffect.Rainbow
 
     # Checking preset attribute update
-    aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.preset.id, 7)
+    aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.preset.id, LedStripT1Preset.Sweep)
     assert len(cluster_listener.attribute_updates) == 8
     assert (
         cluster_listener.attribute_updates[7][0]
         == AqaraLedStripT1.AttributeDefs.preset.id
     )
 
-    assert cluster_listener.attribute_updates[7][1] == 7
+    assert cluster_listener.attribute_updates[7][1] == LedStripT1Preset.Sweep
 
     # Checking speed attribute update
     aqara_cluster.update_attribute(AqaraLedStripT1.AttributeDefs.speed.id, 77)

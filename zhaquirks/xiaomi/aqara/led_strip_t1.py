@@ -42,6 +42,17 @@ class LedStripT1AudioEffect(t.enum32):
     Rainbow = 0x02
     Wave = 0x03
 
+class LedStripT1Preset(t.enum32):
+    "Aqara led strip preset."
+
+    Breathe = 0x00
+    Rainbow = 0x01
+    Sweep = 0x02
+    Flashing = 0x03
+    Strobe = 0x04
+    ReversedRainbow = 0x05
+    Colorful = 0x06
+    Scan = 0x07
 
 MIN_BRIGHTNESS_ID = 0x0515
 MAX_BRIGHTNESS_ID = 0x0516
@@ -101,7 +112,10 @@ class AqaraLedStripT1(XiaomiAqaraE1Cluster):
         )
 
         preset: Final = ZCLAttributeDef(
-            id=PRESET_ID, type=t.uint32_t, is_manufacturer_specific=True
+            id=PRESET_ID, 
+            type=LedStripT1Preset, 
+            zcl_type=DataTypeId.uint32, 
+            is_manufacturer_specific=True
         )
 
         speed: Final = ZCLAttributeDef(
@@ -172,12 +186,10 @@ class AqaraLedStripT1(XiaomiAqaraE1Cluster):
         translation_key="audio_effect",
         fallback_name="Audio effect",
     )
-    .number(
+    .enum(
         AqaraLedStripT1.AttributeDefs.preset.name,
+        LedStripT1Preset,
         AqaraLedStripT1.cluster_id,
-        min_value=1,
-        max_value=32,
-        step=1,
         translation_key="preset",
         fallback_name="Preset",
     )
