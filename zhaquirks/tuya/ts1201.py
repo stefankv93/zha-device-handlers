@@ -83,8 +83,10 @@ class ZosungIRControl(CustomCluster):
         )
 
     async def read_attributes(
-        self, attributes, allow_cache=False, only_cache=False, manufacturer=None
-    ):
+        self,
+        attributes: list[int | str | foundation.ZCLAttributeDef],
+        **kwargs,
+    ) -> Any:
         """Read attributes ZCL foundation command."""
         if (
             self.AttributeDefs.last_learned_ir_code.id in attributes
