@@ -697,17 +697,17 @@ class TuyaThermostatV2NoSchedule(TuyaThermostatV2):
                     TuyaPresetMode.Heat: Thermostat.SystemMode.Heat,
                     TuyaPresetMode.Off: Thermostat.SystemMode.Off,
                 }[x],
-                dp_converter=lambda x: {
-                    Thermostat.SystemMode.Auto: TuyaPresetMode.Auto,
-                    Thermostat.SystemMode.Heat: TuyaPresetMode.Heat,
-                    Thermostat.SystemMode.Off: TuyaPresetMode.Off,
-                }[x],
             ),
             DPToAttributeMapping(
                 ep_attribute=TuyaMCUCluster.ep_attribute,
                 attribute_name="preset_mode",
             ),
         ],
+        dp_converter=lambda x, _: {
+            Thermostat.SystemMode.Auto: TuyaPresetMode.Auto,
+            Thermostat.SystemMode.Heat: TuyaPresetMode.Heat,
+            Thermostat.SystemMode.Off: TuyaPresetMode.Off,
+        }[x],
     )
     .tuya_attribute(
         dp_id=2,

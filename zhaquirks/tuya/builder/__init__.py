@@ -197,6 +197,7 @@ class TuyaQuirkBuilder(QuirkBuilder):
         super().__init__(*args, **kwargs)
         self.tuya_data_point_handlers: dict[int, str] = {}
         self.tuya_dp_to_attribute: dict[int, list[DPToAttributeMapping]] = {}
+        self.tuya_attributes_to_dp_converters: dict[int, Callable[[Any], Any]] = {}
         self.new_attributes: set[foundation.ZCLAttributeDef] = set()
         # quirk_file will point to the init call above if called from this QuirkBuilder,
         # so we need to re-set it correctly
@@ -525,11 +526,11 @@ class TuyaQuirkBuilder(QuirkBuilder):
                     ep_attribute,
                     attribute_name,
                     converter=converter,
-                    dp_converter=dp_converter,
                     endpoint_id=endpoint_id,
                 )
             ],
             dp_handler,
+            dp_converter,
         )
         return self
 
@@ -538,6 +539,7 @@ class TuyaQuirkBuilder(QuirkBuilder):
         dp_id: int,
         attribute_mapping: list[DPToAttributeMapping],
         dp_handler: str = "_dp_2_attr_update",
+        dp_converter: Callable[[Any], Any] | None = None,
     ) -> Self:  # fmt: skip
         """Add Tuya DP Converter that maps to multiple attributes."""
 
@@ -546,6 +548,8 @@ class TuyaQuirkBuilder(QuirkBuilder):
 
         self.tuya_dp_to_attribute.update({dp_id: attribute_mapping})
         self.tuya_data_point_handlers.update({dp_id: dp_handler})
+        if dp_converter:
+            self.tuya_attributes_to_dp_converters.update({dp_id: dp_converter})
         return self
 
     def tuya_dp_attribute(
@@ -853,6 +857,7 @@ class TuyaQuirkBuilder(QuirkBuilder):
             self.new_attributes
             or self.tuya_data_point_handlers
             or self.tuya_dp_to_attribute
+            or self.tuya_attributes_to_dp_converters
             or force_add_cluster
         ):
 
@@ -873,7 +878,9 @@ class TuyaQuirkBuilder(QuirkBuilder):
 
             TuyaReplacementCluster.data_point_handlers = self.tuya_data_point_handlers
             TuyaReplacementCluster.dp_to_attribute = self.tuya_dp_to_attribute
-
+            TuyaReplacementCluster.attributes_to_dp_converters = (
+                self.tuya_attributes_to_dp_converters
+            )
             TuyaReplacementCluster.mcu_write_command = mcu_write_command
 
             self.replaces(TuyaReplacementCluster)
