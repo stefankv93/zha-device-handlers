@@ -133,7 +133,7 @@ class AqaraLedStripT1(XiaomiAqaraE1Cluster):
         AqaraLedStripT1.AttributeDefs.max_brightness.name,
         AqaraLedStripT1.cluster_id,
         min_value=0,
-        max_value=99,
+        max_value=100,
         step=1.0,
         unit=PERCENTAGE,
         translation_key="max_brightness",
