@@ -64,11 +64,15 @@ class AqaraLedStripT1(XiaomiAqaraE1Cluster):
         """Attribute definitions."""
 
         min_brightness: Final = ZCLAttributeDef(
-            id=0x0515, type=t.uint8_t, is_manufacturer_specific=True
+            id=0x0515,
+            type=t.uint8_t,
+            is_manufacturer_specific=True,
         )
 
         max_brightness: Final = ZCLAttributeDef(
-            id=0x0516, type=t.uint8_t, is_manufacturer_specific=True
+            id=0x0516,
+            type=t.uint8_t,
+            is_manufacturer_specific=True,
         )
 
         power_on_state: Final = ZCLAttributeDef(
@@ -79,7 +83,9 @@ class AqaraLedStripT1(XiaomiAqaraE1Cluster):
         )
 
         length: Final = ZCLAttributeDef(
-            id=0x051B, type=t.uint8_t, is_manufacturer_specific=True
+            id=0x051B,
+            type=t.uint8_t,
+            is_manufacturer_specific=True,
         )
 
         audio: Final = ZCLAttributeDef(
@@ -111,7 +117,9 @@ class AqaraLedStripT1(XiaomiAqaraE1Cluster):
         )
 
         speed: Final = ZCLAttributeDef(
-            id=0x0520, type=t.uint8_t, is_manufacturer_specific=True
+            id=0x0520,
+            type=t.uint8_t,
+            is_manufacturer_specific=True,
         )
 
 
