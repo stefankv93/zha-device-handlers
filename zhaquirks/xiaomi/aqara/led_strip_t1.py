@@ -36,7 +36,7 @@ class LedStripT1AudioSensitivity(t.enum8):
 
 
 class LedStripT1AudioEffect(t.enum32):
-    "Aqara led strip audio effect."
+    """Aqara led strip audio effect."""
 
     Random = 0x00
     Blink = 0x01
@@ -45,7 +45,7 @@ class LedStripT1AudioEffect(t.enum32):
 
 
 class LedStripT1Preset(t.enum32):
-    "Aqara led strip preset."
+    """Aqara led strip preset."""
 
     Breathe = 0x00
     Rainbow = 0x01
