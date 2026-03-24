@@ -58,7 +58,7 @@ class LedStripT1Preset(t.enum32):
 
 
 class AqaraLedStripT1(XiaomiAqaraE1Cluster):
-    """Opple cluster."""
+    """Aqara LED Strip T1 manufacturer-specific cluster."""
 
     class AttributeDefs(XiaomiAqaraE1Cluster.AttributeDefs):
         """Attribute definitions."""
