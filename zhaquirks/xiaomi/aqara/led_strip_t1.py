@@ -5,6 +5,7 @@ from typing import Final
 from zigpy import types as t
 from zigpy.quirks.v2 import QuirkBuilder
 from zigpy.quirks.v2.homeassistant import PERCENTAGE, UnitOfLength
+from zigpy.quirks.v2.homeassistant.number import NumberDeviceClass
 from zigpy.zcl.foundation import DataTypeId, ZCLAttributeDef
 
 from zhaquirks.xiaomi import XiaomiAqaraE1Cluster
@@ -153,6 +154,7 @@ class AqaraLedStripT1(XiaomiAqaraE1Cluster):
         step=0.2,
         multiplier=0.2,
         unit=UnitOfLength.METERS,
+        device_class=NumberDeviceClass.DISTANCE,
         translation_key="length",
         fallback_name="Length",
     )
